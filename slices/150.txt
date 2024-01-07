@@ -1,0 +1,1 @@
+{'Anterbot-deprecated': {'all': 4979, 6: 4979}, 'ENxJIA': {'all': 3, 0: 3}, 'XiaoXin666': {'all': 2, 0: 2}, 'KK899': {'all': 4, 0: 2, 10: 2}, 'Anterdc99': {'all': 3, 8: 2, 828: 1}, 'Nickid2018': {'all': 1, 0: 1}}
