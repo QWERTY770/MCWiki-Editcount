@@ -1,1 +1,1 @@
-{'Anterbot-deprecated': {'all': 4985, 6: 4985}}
+{'Anterbot-deprecated': {'all': 4969, 6: 4969}}
