@@ -10,20 +10,26 @@ import openpyxl as xl
 import pywikiapi as wiki
 
 __author__ = "QWERTY770"
-__version__ = "3.0"
+__version__ = "3.1"
 # 2023/11/09: MCW moved to https://zh.minecraft.wiki
 # 2024/01/06: Version 2.0, added multi-revision query to reduce the number of requests
-# 2024/03/23: Version 3.0, added pywikiapi
-
-# variables
-total_edits = 880800
-threads = 16
-per_thread = int(total_edits / 50 / threads)
-total_slices = int(total_edits / 5000)
+# 2024/03/23: Version 3.0, added pywikiapi lib to support logging in
 
 folder = os.getcwd()
 logger = logging.getLogger('MCW EditCount Script')
 logger.setLevel(logging.DEBUG)
+
+if os.path.exists(os.path.join(folder, "config.json")):
+    with open("config.json", "r", encoding="utf-8") as f:
+        config = json.load(f)  # type: dict
+        headers = config.setdefault("headers", {})
+        username = config.setdefault("username", "")
+        password = config.setdefault("password", "")
+        per = config.setdefault("per_request", 50)
+else:
+    headers = {}
+    username = password = ""
+    per = 50
 
 fh = logging.FileHandler('editcount-script-v2.log', encoding="utf-8")
 fh.setLevel(logging.DEBUG)
@@ -36,7 +42,6 @@ logger.addHandler(fh)
 logger.addHandler(ch)
 
 site = wiki.Site("https://zh.minecraft.wiki/api.php")
-# revisions api
 rev_api = "https://zh.minecraft.wiki/api.php?action=query&format=json&prop=revisions&revids="
 namespace_names = {0: "（主）", 1: "讨论", 2: "用户", 3: "用户讨论",
                    4: "Minecraft Wiki", 5: "Minecraft Wiki讨论",
@@ -52,36 +57,35 @@ namespace_names = {0: "（主）", 1: "讨论", 2: "用户", 3: "用户讨论",
 namespace_names_keys = namespace_names.keys()
 namespace_order = dict([(j, i) for i, j in enumerate(sorted(namespace_names.keys()))])
 
-if os.path.exists(os.path.join(folder, "config.json")):
-    with open("config.json", "r", encoding="utf-8") as f:
-        config = json.load(f)  # type: dict
-        headers = config["headers"] if "headers" in config else {}
-        username = config["username"] if "username" in config else None
-        password = config["password"] if "password" in config else None
+# variables
+total_edits = 883680
+threads = 2
+per_thread = int(total_edits / per / threads)
+total_slices = int(total_edits / 5000)
 
 
 def get_revs(start: int, end: int) -> None:
     logger.debug(f"{start} to {end} started!")
-    for i in range(start // 50, end // 50):
+    for i in range(start // per, end // per):
         try:
             data = site("query", prop="revisions", EXTRAS={"headers": headers},
-                        revids="|".join([str(rev) for rev in range(i * 50 + 1, i * 50 + 51)]))
+                        revids="|".join([str(rev) for rev in range(i * per + 1, i * per + 51)]))
             with open(os.path.join(folder, "rev", f"rev_{i}.txt"), "w", encoding="utf-8") as f:
                 f.write(str(data))
         except wiki.utils.ApiError as err:
             logger.error(err)
             sleep(10)
-            get_revs(i * 50 + 1, end)
-    if end % 50 != 0:
+            get_revs(i * per + 1, end)
+    if end % per != 0:
         try:
             data = site("query", prop="revisions", EXTRAS={"headers": headers},
-                        revids="|".join([str(rev) for rev in range((end // 50) * 50 + 1, end + 1)]))
-            with open(os.path.join(folder, "rev", f"rev_{(end // 50)}.txt"), "w", encoding="utf-8") as f:
+                        revids="|".join([str(rev) for rev in range((end // per) * per + 1, end + 1)]))
+            with open(os.path.join(folder, "rev", f"rev_{(end // per)}.txt"), "w", encoding="utf-8") as f:
                 f.write(str(data))
         except wiki.utils.ApiError as err:
             logger.error(err)
             sleep(10)
-            get_revs((end // 50) * 50 + 1, end)
+            get_revs((end // per) * per + 1, end)
     logger.debug(f"{start} to {end} finished!")
 
 
@@ -89,7 +93,7 @@ def get_edit_dic(start: int, end: int) -> dict:
     if start > end:
         return {}
     user_dic = {}
-    for i in range(start // 50, end // 50):
+    for i in range(start // per, end // per):
         pth = os.path.join(folder, "rev", f"rev_{i}.txt")
         if not os.path.exists(pth):
             get_revs(i, i)
@@ -169,16 +173,16 @@ def make_workbook(dic: dict, filename=None) -> None:
 
 
 def download_data() -> None:
-    if username is not None and password is not None:
+    if username and password:
         site.login(username, password)
     thread_list = []
     for i in range(threads):
-        t = threading.Thread(target=get_revs, args=(1 + per_thread * 50 * i, per_thread * 50 * (i + 1)))
+        t = threading.Thread(target=get_revs, args=(1 + per_thread * per * i, per_thread * per * (i + 1)))
         t.start()
         thread_list.append(t)
     for i in thread_list:
         i.join()
-    get_revs(per_thread * 1600 + 1, total_edits)
+    get_revs(per_thread * per * threads + 1, total_edits)
 
 
 def workbook() -> None:
