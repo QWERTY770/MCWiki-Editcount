@@ -1,1 +1,1 @@
-{'Anterbot-deprecated': {'all': 4980, 6: 4980}, 'Chixvv': {'all': 1, 0: 1}, 'ZYJ27726': {'all': 1, 10: 1}, 'Zhangzixuan2010': {'all': 1, 4: 1}, 'Nickid2018': {'all': 3, 2: 2, 0: 1}}
+{'Anterbot-deprecated': {'all': 4978, 6: 4978}, 'Chixvv': {'all': 1, 0: 1}, 'ZYJ27726': {'all': 1, 10: 1}, 'Zhangzixuan2010': {'all': 1, 4: 1}, 'Nickid2018': {'all': 3, 2: 2, 0: 1}}

@@ -10,7 +10,7 @@ import openpyxl as xl
 import pywikiapi as wiki
 
 __author__ = "QWERTY770"
-__version__ = "3.1"
+__version__ = "3.2"
 # 2023/11/09: MCW moved to https://zh.minecraft.wiki
 # 2024/01/06: Version 2.0, added multi-revision query to reduce the number of requests
 # 2024/03/23: Version 3.0, added pywikiapi lib to support logging in
@@ -31,7 +31,7 @@ else:
     username = password = ""
     per = 50
 
-fh = logging.FileHandler('editcount-script-v2.log', encoding="utf-8")
+fh = logging.FileHandler('editcount-script-v3.log', encoding="utf-8")
 fh.setLevel(logging.DEBUG)
 ch = logging.StreamHandler()
 ch.setLevel(logging.INFO)
@@ -58,34 +58,32 @@ namespace_names_keys = namespace_names.keys()
 namespace_order = dict([(j, i) for i, j in enumerate(sorted(namespace_names.keys()))])
 
 # variables
-total_edits = 883680
-threads = 2
+total_edits = 899800
+threads = 4
 per_thread = int(total_edits / per / threads)
 total_slices = int(total_edits / 5000)
+
+
+def get_rev(revids: str, index: int) -> None:
+    try:
+        data = site("query", prop="revisions", EXTRAS={"headers": headers},
+                    revids=revids)
+        with open(os.path.join(folder, "rev", f"rev_{index}.txt"), "w", encoding="utf-8") as f:
+            f.write(str(data))
+    except Exception as err:
+        logger.error(err)
+        sleep(10)
+        get_rev(revids, index)
 
 
 def get_revs(start: int, end: int) -> None:
     logger.debug(f"{start} to {end} started!")
     for i in range(start // per, end // per):
-        try:
-            data = site("query", prop="revisions", EXTRAS={"headers": headers},
-                        revids="|".join([str(rev) for rev in range(i * per + 1, i * per + 51)]))
-            with open(os.path.join(folder, "rev", f"rev_{i}.txt"), "w", encoding="utf-8") as f:
-                f.write(str(data))
-        except wiki.utils.ApiError as err:
-            logger.error(err)
-            sleep(10)
-            get_revs(i * per + 1, end)
+        if i % 50 == 0:
+            print(f"{start}-{end} {i}\n", end="")
+        get_rev("|".join([str(rev) for rev in range(i * per + 1, i * per + 51)]), i)
     if end % per != 0:
-        try:
-            data = site("query", prop="revisions", EXTRAS={"headers": headers},
-                        revids="|".join([str(rev) for rev in range((end // per) * per + 1, end + 1)]))
-            with open(os.path.join(folder, "rev", f"rev_{(end // per)}.txt"), "w", encoding="utf-8") as f:
-                f.write(str(data))
-        except wiki.utils.ApiError as err:
-            logger.error(err)
-            sleep(10)
-            get_revs((end // per) * per + 1, end)
+        get_rev("|".join([str(rev) for rev in range((end // per) * per + 1, end + 1)]), end // per)
     logger.debug(f"{start} to {end} finished!")
 
 
@@ -200,6 +198,6 @@ def workbook() -> None:
 
 
 if __name__ == "__main__":
-    # download_data()
-    # workbook()
+    download_data()
+    workbook()
     logger.info("Finished!")
