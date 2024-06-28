@@ -55,7 +55,7 @@ namespace_names_keys = namespace_names.keys()
 namespace_order = dict([(j, i) for i, j in enumerate(sorted(namespace_names.keys()))])
 
 # variables
-total_edits = 926650
+total_edits = 926760
 threads = 4
 per_thread = int(total_edits / per / threads)
 total_slices = int(total_edits / 5000)
@@ -181,17 +181,27 @@ def download_data() -> None:
 def workbook() -> None:
     for i in range(total_slices):
         slic = get_edit_dic(1 + 5000 * i, 5000 + 5000 * i)
-        file = open(os.path.join(folder, "slices", f"{i}.txt"), "w", encoding="utf-8")
+        file = open(os.path.join(folder, "slices", f"{i}.json"), "w", encoding="utf-8")
         json.dump(slic, file, ensure_ascii=False, indent=2)
     logger.info(f"Successfully generated {total_slices} slices!")
 
     slices_list = []
     for i in range(total_slices):
-        slices_list.append(json.load(open(os.path.join(folder, "slices", f"{i}.txt"), "r", encoding="utf-8")))
-    make_workbook(merge_edit_dic(reduce(merge_edit_dic, slices_list), get_edit_dic(total_slices * 5000, total_edits)))
+        slic = json.load(open(os.path.join(folder, "slices", f"{i}.txt"), "r", encoding="utf-8"))
+        slic2 = {}
+        for j in slic.keys():
+            slic2[j] = {}
+            for k in slic[j].keys():
+                if k == "all":
+                    slic2[j][k] = slic[j][k]
+                else:
+                    slic2[j][int(k)] = slic[j][k]
+        slices_list.append(slic2)
+    dic = merge_edit_dic(reduce(merge_edit_dic, slices_list), get_edit_dic(total_slices * 5000, total_edits))
+    make_workbook(dic)
 
 
 if __name__ == "__main__":
-    download_data()
-    workbook()
+    # download_data()
+    # workbook()
     logger.info("Finished!")

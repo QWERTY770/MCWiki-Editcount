@@ -1,1 +1,243 @@
-{'Anterbot-deprecated': {'all': 3040, 6: 3040}, 'Lakejason0': {'all': 1, 4: 1}, 'IBuckeeet': {'all': 77, 0: 65, 6: 5, 2: 6, 10: 1}, 'Siiftun1857': {'all': 40, 0: 37, 4: 1, 10: 2}, 'AblazeVase69188': {'all': 44, 0: 24, 4: 1, 9998: 2, 2: 13, 6: 4}, 'HlDoroWolf': {'all': 1, 0: 1}, 'SorajimaAsugawa': {'all': 7, 0: 7}, 'MincerafterJack': {'all': 1, 0: 1}, 'XiaoXin666': {'all': 80, 0: 67, 10: 9, 828: 2, 2: 1, 6: 1}, 'Chixvv': {'all': 4, 0: 4}, 'Mr weixiang': {'all': 2, 9996: 2}, 'Nickid2018': {'all': 32, 0: 26, 2: 6}, 'Ian-zb': {'all': 2, 2: 1, 10: 1}, 'Lxazl5770': {'all': 29, 4: 6, 2: 10, 8: 5, 0: 5, 10: 1, 14: 1, 828: 1}, 'ZYJ27726': {'all': 3, 0: 2, 10: 1}, 'Hatsuki kiri': {'all': 9, 0: 6, 828: 2, 14: 1}, 'XDMC1': {'all': 4, 14: 2, 10: 1, 0: 1}, 'Anterdc99': {'all': 403, 2: 22, 10: 32, 0: 138, 4: 21, 6: 164, 10000: 3, 9998: 1, 828: 21, 1: 1}, 'JYN2018X': {'all': 3, 0: 3}, 'McplayerFS': {'all': 4, 0: 2, 2: 2}, 'Terlity': {'all': 2, 0: 2}, 'Grayen': {'all': 2, 0: 1, 10: 1}, 'Ff98sha': {'all': 3, 4: 1, 2: 2}, 'Rereruaa': {'all': 1, 0: 1}, 'Minecraforever': {'all': 8, 4: 1, 2: 7}, 'Gfbdhd': {'all': 3, 0: 3}, 'NaTyphoon@fandom': {'all': 1, 0: 1}, 'Oakar567': {'all': 2, 0: 2}, 'Xiaoyua55': {'all': 1, 0: 1}, 'LegendLZD': {'all': 1, 2: 1}, 'In Minecraft': {'all': 6, 0: 3, 10: 3}, 'Fengjingzi': {'all': 13, 0: 12, 6: 1}, 'Hyuga aratihs': {'all': 20, 0: 19, 10: 1}, 'Langyo china': {'all': 2, 2: 2}, 'KK899': {'all': 79, 0: 51, 6: 24, 10: 4}, 'Zhangzixuan2010': {'all': 2, 2: 1, 0: 1}, 'Lanzhuschool': {'all': 1, 0: 1}, 'Duowan channel': {'all': 1, 0: 1}, 'SolidBlock': {'all': 17, 0: 17}, 'CrepaRB': {'all': 18, 0: 14, 6: 4}, '烬落江南': {'all': 3, 0: 3}, 'TripleCamera': {'all': 2, 0: 2}, 'Snow dash': {'all': 4, 10: 2, 0: 1, 828: 1}, 'Vjfjng': {'all': 2, 2: 2}, 'SkyEye FAST': {'all': 1, 0: 1}, 'MysticNebula70': {'all': 9, 828: 1, 6: 2, 14: 6}, 'MyNe70bot': {'all': 954, 6: 954}, 'Kite Picker': {'all': 2, 0: 2}}
+{
+  "Anterbot-deprecated": {
+    "all": 3035,
+    "6": 3035
+  },
+  "Lakejason0": {
+    "all": 1,
+    "4": 1
+  },
+  "IBuckeeet": {
+    "all": 77,
+    "0": 65,
+    "6": 5,
+    "2": 6,
+    "10": 1
+  },
+  "Siiftun1857": {
+    "all": 40,
+    "0": 37,
+    "4": 1,
+    "10": 2
+  },
+  "AblazeVase69188": {
+    "all": 44,
+    "0": 24,
+    "4": 1,
+    "9998": 2,
+    "2": 13,
+    "6": 4
+  },
+  "HlDoroWolf": {
+    "all": 1,
+    "0": 1
+  },
+  "SorajimaAsugawa": {
+    "all": 7,
+    "0": 7
+  },
+  "MincerafterJack": {
+    "all": 1,
+    "0": 1
+  },
+  "XiaoXin666": {
+    "all": 80,
+    "0": 67,
+    "10": 9,
+    "828": 2,
+    "2": 1,
+    "6": 1
+  },
+  "Chixvv": {
+    "all": 4,
+    "0": 4
+  },
+  "Mr weixiang": {
+    "all": 2,
+    "9996": 2
+  },
+  "Nickid2018": {
+    "all": 32,
+    "0": 26,
+    "2": 6
+  },
+  "Ian-zb": {
+    "all": 2,
+    "2": 1,
+    "10": 1
+  },
+  "Lxazl5770": {
+    "all": 29,
+    "4": 6,
+    "2": 10,
+    "8": 5,
+    "0": 5,
+    "10": 1,
+    "14": 1,
+    "828": 1
+  },
+  "ZYJ27726": {
+    "all": 3,
+    "0": 2,
+    "10": 1
+  },
+  "Hatsuki kiri": {
+    "all": 9,
+    "0": 6,
+    "828": 2,
+    "14": 1
+  },
+  "XDMC1": {
+    "all": 4,
+    "14": 2,
+    "10": 1,
+    "0": 1
+  },
+  "Anterdc99": {
+    "all": 403,
+    "2": 22,
+    "10": 32,
+    "0": 138,
+    "4": 21,
+    "6": 164,
+    "10000": 3,
+    "9998": 1,
+    "828": 21,
+    "1": 1
+  },
+  "JYN2018X": {
+    "all": 3,
+    "0": 3
+  },
+  "McplayerFS": {
+    "all": 4,
+    "0": 2,
+    "2": 2
+  },
+  "Terlity": {
+    "all": 2,
+    "0": 2
+  },
+  "Grayen": {
+    "all": 2,
+    "0": 1,
+    "10": 1
+  },
+  "Ff98sha": {
+    "all": 3,
+    "4": 1,
+    "2": 2
+  },
+  "Rereruaa": {
+    "all": 1,
+    "0": 1
+  },
+  "Minecraforever": {
+    "all": 8,
+    "4": 1,
+    "2": 7
+  },
+  "Gfbdhd": {
+    "all": 3,
+    "0": 3
+  },
+  "NaTyphoon@fandom": {
+    "all": 1,
+    "0": 1
+  },
+  "Oakar567": {
+    "all": 2,
+    "0": 2
+  },
+  "Xiaoyua55": {
+    "all": 1,
+    "0": 1
+  },
+  "LegendLZD": {
+    "all": 1,
+    "2": 1
+  },
+  "In Minecraft": {
+    "all": 6,
+    "0": 3,
+    "10": 3
+  },
+  "Fengjingzi": {
+    "all": 13,
+    "0": 12,
+    "6": 1
+  },
+  "Hyuga aratihs": {
+    "all": 20,
+    "0": 19,
+    "10": 1
+  },
+  "Langyo china": {
+    "all": 2,
+    "2": 2
+  },
+  "KK899": {
+    "all": 79,
+    "0": 51,
+    "6": 24,
+    "10": 4
+  },
+  "Zhangzixuan2010": {
+    "all": 2,
+    "2": 1,
+    "0": 1
+  },
+  "Lanzhuschool": {
+    "all": 1,
+    "0": 1
+  },
+  "Duowan channel": {
+    "all": 1,
+    "0": 1
+  },
+  "SolidBlock": {
+    "all": 17,
+    "0": 17
+  },
+  "CrepaRB": {
+    "all": 18,
+    "0": 14,
+    "6": 4
+  },
+  "烬落江南": {
+    "all": 3,
+    "0": 3
+  },
+  "TripleCamera": {
+    "all": 2,
+    "0": 2
+  },
+  "Snow dash": {
+    "all": 4,
+    "10": 2,
+    "0": 1,
+    "828": 1
+  },
+  "Vjfjng": {
+    "all": 2,
+    "2": 2
+  },
+  "SkyEye FAST": {
+    "all": 1,
+    "0": 1
+  },
+  "MysticNebula70": {
+    "all": 9,
+    "828": 1,
+    "6": 2,
+    "14": 6
+  },
+  "MyNe70bot": {
+    "all": 954,
+    "6": 954
+  },
+  "Kite Picker": {
+    "all": 2,
+    "0": 2
+  }
+}

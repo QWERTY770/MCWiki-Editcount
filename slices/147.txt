@@ -1,1 +1,18 @@
-{'Anterbot-deprecated': {'all': 4983, 6: 4983}, 'Lxazl5770': {'all': 6, 828: 6}, 'Vjfjng': {'all': 1, 2: 1}, 'Zhangzixuan2010': {'all': 4, 0: 4}}
+{
+  "Anterbot-deprecated": {
+    "all": 4980,
+    "6": 4980
+  },
+  "Lxazl5770": {
+    "all": 6,
+    "828": 6
+  },
+  "Vjfjng": {
+    "all": 1,
+    "2": 1
+  },
+  "Zhangzixuan2010": {
+    "all": 4,
+    "0": 4
+  }
+}

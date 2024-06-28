@@ -1,1 +1,11 @@
-{'Anterbot-deprecated': {'all': 4958, 6: 4958}, 'Anterdc99': {'all': 2, 0: 1, 8: 1}}
+{
+  "Anterbot-deprecated": {
+    "all": 4957,
+    "6": 4957
+  },
+  "Anterdc99": {
+    "all": 2,
+    "0": 1,
+    "8": 1
+  }
+}
