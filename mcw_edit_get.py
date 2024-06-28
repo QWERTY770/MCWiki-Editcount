@@ -10,10 +10,7 @@ import openpyxl as xl
 import pywikiapi as wiki
 
 __author__ = "QWERTY770"
-__version__ = "3.2"
-# 2023/11/09: MCW moved to https://zh.minecraft.wiki
-# 2024/01/06: Version 2.0, added multi-revision query to reduce the number of requests
-# 2024/03/23: Version 3.0, added pywikiapi lib to support logging in
+__version__ = "3.3"
 
 folder = os.getcwd()
 logger = logging.getLogger('MCW EditCount Script')
@@ -41,7 +38,7 @@ ch.setFormatter(formatter)
 logger.addHandler(fh)
 logger.addHandler(ch)
 
-site = wiki.Site("https://zh.minecraft.wiki/api.php")
+site = wiki.Site("https://zh.minecraft.wiki/api.php", retry_after_conn=15)
 rev_api = "https://zh.minecraft.wiki/api.php?action=query&format=json&prop=revisions&revids="
 namespace_names = {0: "（主）", 1: "讨论", 2: "用户", 3: "用户讨论",
                    4: "Minecraft Wiki", 5: "Minecraft Wiki讨论",
@@ -58,7 +55,7 @@ namespace_names_keys = namespace_names.keys()
 namespace_order = dict([(j, i) for i, j in enumerate(sorted(namespace_names.keys()))])
 
 # variables
-total_edits = 899800
+total_edits = 926650
 threads = 4
 per_thread = int(total_edits / per / threads)
 total_slices = int(total_edits / 5000)
@@ -66,10 +63,9 @@ total_slices = int(total_edits / 5000)
 
 def get_rev(revids: str, index: int) -> None:
     try:
-        data = site("query", prop="revisions", EXTRAS={"headers": headers},
-                    revids=revids)
-        with open(os.path.join(folder, "rev", f"rev_{index}.txt"), "w", encoding="utf-8") as f:
-            f.write(str(data))
+        data = site("query", prop="revisions", EXTRAS={"headers": headers}, revids=revids)
+        file = open(os.path.join(folder, "rev", f"rev_{index}.txt"), "w", encoding="utf-8")
+        json.dump(data, file, ensure_ascii=False)
     except Exception as err:
         logger.error(err)
         sleep(10)
@@ -95,8 +91,7 @@ def get_edit_dic(start: int, end: int) -> dict:
         pth = os.path.join(folder, "rev", f"rev_{i}.txt")
         if not os.path.exists(pth):
             get_revs(i, i)
-        with open(pth, "r", encoding="utf-8") as f:
-            js = eval(f.read())
+        js = json.load(open(pth, "r", encoding="utf-8"))
         if "pages" not in js["query"]:
             continue
         pages = js["query"]["pages"]
@@ -185,15 +180,14 @@ def download_data() -> None:
 
 def workbook() -> None:
     for i in range(total_slices):
-        slic = str(get_edit_dic(1 + 5000 * i, 5000 + 5000 * i))
-        with open(os.path.join(folder, "slices", f"{i}.txt"), "w", encoding="utf-8") as f:
-            f.write(slic)
+        slic = get_edit_dic(1 + 5000 * i, 5000 + 5000 * i)
+        file = open(os.path.join(folder, "slices", f"{i}.txt"), "w", encoding="utf-8")
+        json.dump(slic, file, ensure_ascii=False, indent=2)
     logger.info(f"Successfully generated {total_slices} slices!")
 
     slices_list = []
     for i in range(total_slices):
-        with open(os.path.join(folder, "slices", f"{i}.txt"), "r", encoding="utf-8") as f:
-            slices_list.append(eval(f.read()))
+        slices_list.append(json.load(open(os.path.join(folder, "slices", f"{i}.txt"), "r", encoding="utf-8")))
     make_workbook(merge_edit_dic(reduce(merge_edit_dic, slices_list), get_edit_dic(total_slices * 5000, total_edits)))
 
 
