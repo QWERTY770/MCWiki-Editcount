@@ -10,7 +10,7 @@ import openpyxl as xl
 import pywikiapi as wiki
 
 __author__ = "QWERTY770"
-__version__ = "3.3"
+__version__ = "3.4"
 
 folder = os.getcwd()
 logger = logging.getLogger('MCW EditCount Script')
@@ -49,13 +49,11 @@ namespace_names = {0: "（主）", 1: "讨论", 2: "用户", 3: "用户讨论",
                    9996: "地下城教程", 9997: "地下城教程讨论", 9998: "教程", 9999: "教程讨论",
                    10000: "地下城", 10001: "地下城讨论", 10002: "地球", 10003: "地球讨论",
                    10004: "故事模式", 10005: "故事模式讨论", 10006: "传奇", 10007: "传奇讨论"}
-#                    302: "Property", 303: "Property talk", 308: "Concept", 309: "Concept talk",
-#                    312: "smw/schema", 313: "smw/schema talk", 314: "Rule", 315: "Rule talk"
 namespace_names_keys = namespace_names.keys()
 namespace_order = dict([(j, i) for i, j in enumerate(sorted(namespace_names.keys()))])
 
 # variables
-total_edits = 926760
+total_edits = 952800
 threads = 4
 per_thread = int(total_edits / per / threads)
 total_slices = int(total_edits / 5000)
@@ -91,6 +89,12 @@ def get_edit_dic(start: int, end: int) -> dict:
         pth = os.path.join(folder, "rev", f"rev_{i}.txt")
         if not os.path.exists(pth):
             get_revs(i, i)
+        with open(pth, "r", encoding="utf-8") as file:
+            content = file.read()
+        while not content:
+            get_revs(i * per + 1, i * per + per)
+            with open(pth, "r", encoding="utf-8") as file:
+                content = file.read()
         js = json.load(open(pth, "r", encoding="utf-8"))
         if "pages" not in js["query"]:
             continue
@@ -126,17 +130,15 @@ def merge_edit_dic(dic1: dict, dic2: dict) -> dict:
     result = deepcopy(dic1)
     for username in dic1.keys():
         for namespace in dic1[username].keys():
-            if username in dic2:
-                if namespace in dic2[username]:
-                    result[username][namespace] += dic2[username][namespace]
+            if username in dic2 and namespace in dic2[username]:
+                result[username][namespace] += dic2[username][namespace]
     del username, namespace
     for username in dic2.keys():
         for namespace in dic2[username].keys():
             if username not in result:
                 result[username] = dic2[username]
-            else:
-                if namespace not in result[username]:
-                    result[username][namespace] = dic2[username][namespace]
+            elif namespace not in result[username]:
+                result[username][namespace] = dic2[username][namespace]
     return result
 
 
@@ -144,7 +146,7 @@ def make_workbook(dic: dict, filename=None) -> None:
     if filename is None:
         filename = f"minecraftwiki-useredit-{strftime('%Y%m%d-%H%M%S', localtime())}.xlsx"
     wb = xl.Workbook()
-    ws = wb.create_sheet('main', 0)
+    ws = wb.create_sheet("main", 0)
     ws.cell(row=1, column=1).value = "用户名"
     ws.cell(row=1, column=2).value = "编辑总计"
     for a, b in enumerate(namespace_names.keys()):
@@ -162,7 +164,6 @@ def make_workbook(dic: dict, filename=None) -> None:
 
     wb.save(os.path.join(folder, filename))
     wb.close()
-    logger.info("Successfully generated workbook sheet(s)!")
 
 
 def download_data() -> None:
@@ -170,7 +171,8 @@ def download_data() -> None:
         site.login(username, password)
     thread_list = []
     for i in range(threads):
-        t = threading.Thread(target=get_revs, args=(1 + per_thread * per * i, per_thread * per * (i + 1)))
+        num = per_thread * per * i
+        t = threading.Thread(target=get_revs, args=(num + 1, num + per_thread * per))
         t.start()
         thread_list.append(t)
     for i in thread_list:
@@ -187,7 +189,7 @@ def workbook() -> None:
 
     slices_list = []
     for i in range(total_slices):
-        slic = json.load(open(os.path.join(folder, "slices", f"{i}.txt"), "r", encoding="utf-8"))
+        slic = json.load(open(os.path.join(folder, "slices", f"{i}.json"), "r", encoding="utf-8"))
         slic2 = {}
         for j in slic.keys():
             slic2[j] = {}
@@ -199,9 +201,10 @@ def workbook() -> None:
         slices_list.append(slic2)
     dic = merge_edit_dic(reduce(merge_edit_dic, slices_list), get_edit_dic(total_slices * 5000, total_edits))
     make_workbook(dic)
+    logger.info("Successfully generated workbook sheet(s)!")
 
 
 if __name__ == "__main__":
-    # download_data()
-    # workbook()
+    download_data()
+    workbook()
     logger.info("Finished!")

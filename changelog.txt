@@ -1,8 +1,0 @@
-2022/07/11: The beginning of this project (maybe)
-2022/07/18: The first edit count table was generated
-2023/11/09: MCW moved to https://zh.minecraft.wiki
-2024/01/06 Version 2.0: Added multi-revision query to reduce the number of requests
-2024/03/23 Version 3.0: Added pywikiapi lib to support logging in
-2024/03/27 Version 3.1: Added some variables
-2024/04/14 Version 3.2: Rewrote function "get_revs"
-2024/06/28 Version 3.3: Updated file I/O
