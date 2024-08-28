@@ -53,7 +53,7 @@ namespace_names_keys = namespace_names.keys()
 namespace_order = dict([(j, i) for i, j in enumerate(sorted(namespace_names.keys()))])
 
 # variables
-total_edits = 952800
+total_edits = 967200
 threads = 4
 per_thread = int(total_edits / per / threads)
 total_slices = int(total_edits / 5000)
